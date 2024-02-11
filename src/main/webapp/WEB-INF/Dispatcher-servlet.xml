@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+ http://www.springframework.org/schema/beans/spring-beans.xsd
+ http://www.springframework.org/schema/context
+ http://www.springframework.org/schema/context/spring-context.xsd
+  http://www.springframework.org/schema/util
+ http://www.springframework.org/schema/util/spring-util.xsd
+  http://www.springframework.org/schema/tx
+ http://www.springframework.org/schema/tx/spring-tx.xsd
+  http://www.springframework.org/schema/mvc
+ http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+	<context:component-scan base-package="com" />
+	<tx:annotation-driven />
+	<mvc:annotation-driven />
+	<mvc:resources location="/WEB-INF/resources/"
+		mapping="resources/**" />
+	<mvc:resources mapping="/sitemap.xml" location="/WEB-INF/"
+		cache-period="3600" />
+	<mvc:resources mapping="/robots.txt" location="/WEB-INF/"
+		cache-period="3600" />
+
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+		name="viewres">
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+
+	<bean
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+		name="ds">
+		<property name="driverClassName"
+			value="com.mysql.cj.jdbc.Driver" />
+		<property name="url"
+			value="jdbc:mysql://127.0.0.1:3306/dattebayo" />
+		<property name="username" value="admin" />
+		<property name="password" value="Shibu123"></property>
+	</bean>
+
+
+
+	<bean
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"
+		name="factory">
+		<property name="dataSource" ref="ds" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			</props>
+		</property>
+		<property name="annotatedClasses">
+			<list>
+				<value>com.Entities.Product</value>
+				<value>com.Entities.ProductColor</value>
+				<value>com.Entities.ProductImage</value>
+				<value>com.Entities.ProductSize</value>
+				<value>com.Entities.Categories</value>
+				<value>com.Entities.Anime</value>
+				<value>com.Entities.Character</value>
+				<value>com.Entities.User</value>
+				<value>com.Entities.Cart</value>
+				<value>com.Entities.Address</value>
+				<value>com.Entities.Orders</value>
+				<value>com.Entities.CouponCodes</value>
+				<value>com.Entities.ImageDB</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager"
+		name="transactionManager">
+		<property name="sessionFactory" ref="factory"></property>
+	</bean>
+
+
+
+
+</beans>
